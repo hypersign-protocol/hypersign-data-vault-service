@@ -1,5 +1,5 @@
 {
-  "name": "hypersign-edv-server",
+  "name": "hypersign-vault",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -34,7 +34,7 @@
     "class-validator": "^0.14.0",
     "crypto-ld": "^6.0.0",
     "module": "^1.2.5",
-    "mongoose": "^7.3.0",
+    "mongoose": "^7.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "security-context": "^4.0.0",

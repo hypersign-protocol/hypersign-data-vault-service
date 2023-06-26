@@ -1,65 +1,73 @@
 import { Prop, Schema, SchemaFactory, } from '@nestjs/mongoose';
-import { IsNotEmpty, IsNumber, IsObject, IsString } from 'class-validator';
-import {Document} from 'mongoose';
+import { IsNotEmpty, IsNumber, IsObject, IsString, Validate } from 'class-validator';
+import { Hmac } from 'crypto';
+import mongoose, { Document } from 'mongoose';
 
 
 
 
-export type SchemaDoucment=VaultsIndex & Document;
+export type SchemaDoucment = VaultsIndex & Document;
+
+
+class  keyAgreementKey{
+    id: string
+    type: string
+}
+
+class hmac  {
+    id: string
+    type: string
+}
 
 @Schema()
-export class VaultsIndex{
+export class VaultsIndex {
 
     @Prop()
     @IsString()
     @IsNotEmpty()
-    id:string;
+    id: string;
 
     @Prop()
     @IsString()
     @IsNotEmpty()
-    controller:string;
+    controller: string;
 
     @Prop()
     @IsString()
-    referenceId:string;
+    referenceId: string;
 
     @Prop({
-        type:Object
+        type: keyAgreementKey
     })
-    @IsObject()
-    keyAgreementKey:object;
+  
+    keyAgreementKey: keyAgreementKey;
 
     @Prop({
-        type:Object
+        type: hmac
     })
-    @IsObject()
-    hmac:object;
+    hmac: hmac
 
     @Prop()
     @IsNumber()
-    sequence:Number;
+    sequence: number;
 
     @Prop()
     @IsString()
-    invoker:string;
+    invoker: string;
 
 
     @Prop()
     @IsString()
-    delegator:string;
-
-    
+    delegator: string;
 
 
-    
+
+
+
 
 
 }
 
 
 export const VaultIndexSchema = SchemaFactory.createForClass(VaultsIndex);
-VaultIndexSchema.index({ "id": 1, "controller": 1 }, { unique: true });
-
-VaultIndexSchema.index({ "id": 'text', "controller": 'text' }, { unique: true });
-
+VaultIndexSchema.index({ "id": 1, "controller": 1 }, { unique: true, background: true });

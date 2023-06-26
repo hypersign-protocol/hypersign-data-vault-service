@@ -6,6 +6,7 @@ export const StorageProvider = {
     useFactory: (): Promise<Connection>=>
         mongoose.createConnection(process.env.DB_URL + '/vault').asPromise()
         .then((connection)=>{
+        
             Logger.log('Connection established', 'StorageProvider');
             return connection;
         })

@@ -21,5 +21,5 @@ export const getHash = (str) => {
 
 export const generateDocId = (str) => {
   const hash = createHash('sha256');
-  return 'hs:doc:'+ hash.update(str).digest('base64').toLowerCase();
+  return 'hs:doc:'+ hash.update(str).digest('base64url').toLowerCase();
 }

@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Model } from "mongoose";
+import {  VaultsIndex } from "../model/vault.model";
 
 
 
@@ -7,20 +8,20 @@ import { Model } from "mongoose";
 export class vaultRepository {
 
     constructor(
-        @Inject('VaultIndexProvider') private readonly vaultProvider:Model<any>
+        @Inject('VaultIndexProvider') private readonly vaultProvider:Model<VaultsIndex>
     ) { }
 
 
-    async createVault(vault: any ) {
-        
+    async createVault(vault: VaultsIndex ) {                
         const newVault = new this.vaultProvider(vault);
         return await newVault.save();
     }
 
-    async getVault(id: string) {
+    async getVault(vaultFilterQuery: Partial<VaultsIndex>) {
         const vault = await this.vaultProvider.findOne(
-            { id: id },
+            vaultFilterQuery,
         );
+        
         return vault;
     }
 }

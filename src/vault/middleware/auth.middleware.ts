@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware } from "@nestjs/common";
+import { Injectable, Logger, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from 'express';
 import * as crypto from "node:crypto";
 import { Ed25519VerificationKey2020 } from "@digitalbazaar/ed25519-verification-key-2020";
@@ -141,6 +141,8 @@ export class AuthMiddleware implements NestMiddleware {
                 }
 
                 if (verified === true) {
+                    Logger.log("Signature verified ✓", "AuthMiddleware");                    
+
                     return _next();
                 } else {
                     return _res.status(401).send("Could not verify the signature");
@@ -206,6 +208,7 @@ export async function verifyHTTPRequestSIgnedByWeb3Wallet(
         web3.utils.toChecksumAddress(address) ===
         web3.utils.toChecksumAddress(actualAddr)
     ) {
+        Logger.log("Signature verified ✓","AuthMiddleware");
         return _next();
     }
     return _res.status(401).send("Could not verify the signature");
@@ -229,7 +232,6 @@ export async function verifyDigest(
 ) {
     const { headers: signed } = _req;
     const { digest } = signed;
-    console.log(digest);
     _next();
 }
 

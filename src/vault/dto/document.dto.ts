@@ -156,10 +156,42 @@ class EncryptedData{
 }
 
 export class CreateDocumentDTO{
+    
     @ApiProperty({
         required:false
     })
     readonly id?: string;
+
+    @ApiProperty({
+        type: [IIndexed],
+        required:false
+    })
+    @Type(() => IIndexed)
+    @ValidateNested({each:true})
+    readonly indexed?: IIndexed[];
+
+    @ApiProperty({
+        required:false
+    })
+    readonly jwe?:JWE ;
+
+
+
+    @ApiProperty({
+        required:false
+    })
+
+    readonly encryptedData?:EncryptedData;
+
+}
+
+
+export class UpdateDoumentDTO{
+    
+    @ApiProperty({
+        required:true
+    })
+    readonly id: string;
 
     @ApiProperty({
         type: [IIndexed],
@@ -181,5 +213,23 @@ export class CreateDocumentDTO{
     })
 
     readonly encryptedData?:EncryptedData;
+
+}
+
+
+
+
+export class DocumentResponseDTO{
+
+    @ApiProperty({
+        description:'Message of the response',
+    })
+    message: string;
+
+    @ApiProperty({
+        description:'The document',
+        type:CreateDocumentDTO
+    })
+    document: CreateDocumentDTO;
 
 }

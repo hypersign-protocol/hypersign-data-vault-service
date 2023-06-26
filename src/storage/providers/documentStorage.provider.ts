@@ -1,8 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { Connection, Model, createConnection } from "mongoose";
+import mongoose, { Connection, FilterQuery, Model, Mongoose, createConnection } from "mongoose";
 import { DocSchema, DoucmentSchema } from "../model/doucment.model";
 @Injectable()
 export class DocumentStorageProvider {
+
   private connection: Connection;
   private connectedDB: Model<DocSchema>;
 
@@ -11,8 +12,8 @@ export class DocumentStorageProvider {
   async connectDB(
     dataBaseName: string,
   ) {
-
     this.connection =await createConnection(process.env.DB_URL + `/${dataBaseName}`).asPromise();
+
     await this.initiate();
     return this.connection;
 
@@ -36,13 +37,31 @@ export class DocumentStorageProvider {
     return await newDocument.save();
   }
 
-  async getDocument(id:DocSchema['id']) {
+  async getDocument(documentFilterQuery:FilterQuery<DocSchema>) {
 
     return await this.connectedDB.findOne(
-      { id: id },
+      documentFilterQuery,
+     
+    )
+
+  }
+
+  async updateDocument(documentFilterQuery:FilterQuery<DocSchema>,document:Partial<DocSchema>) {    
+    return await this.connectedDB.findOneAndUpdate(
+      documentFilterQuery,
+      document,
+      { new: true }
     );
 
   }
+
+
+  async   getAllDocuments(documentFilterQuery:FilterQuery<DocSchema>):Promise<DocSchema[]>{
+    return await this.connectedDB.find().limit(documentFilterQuery.limit).skip(documentFilterQuery.skip);
+  } 
+
+
+
 
 
 
