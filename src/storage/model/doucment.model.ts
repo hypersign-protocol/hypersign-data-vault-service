@@ -169,6 +169,6 @@ export class DocSchema {
 
 export const DoucmentSchema = SchemaFactory.createForClass(DocSchema);
 
-DoucmentSchema.index({ "id": 1 }, { unique: true });
+DoucmentSchema.index({ "id": 1 }, { unique: true, background:true, });
 
 

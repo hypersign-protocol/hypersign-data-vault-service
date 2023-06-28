@@ -71,3 +71,4 @@ export class VaultsIndex {
 
 export const VaultIndexSchema = SchemaFactory.createForClass(VaultsIndex);
 VaultIndexSchema.index({ "id": 1, "controller": 1 }, { unique: true, background: true });
+VaultIndexSchema.index({ "id": 1 }, { unique: true, background: true });

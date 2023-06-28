@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { urlencoded } from 'express';
 import { LogLevel, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { lightTheme, outline } from './theme';
 async function bootstrap() {
 
   const log_levels: Array<LogLevel> = process.env.LOG_LEVEL ? process.env.LOG_LEVEL.split(',') as Array<LogLevel> : ['log'];
@@ -42,7 +41,6 @@ label.className = 'switch';
 const input = document.createElement('input');
 input.id = 'toggle';
 input.type = 'checkbox';
-input.checked = true;
 
 const span = document.createElement('span');
 span.className = 'slider round';
@@ -140,9 +138,10 @@ window.addEventListener('load', function() {
     // override default css
       
 
-      
+    document.body.style.backgroundColor = '#fff';
 
-      document.body.style.backgroundColor = '#fff';
+    document.querySelector('.opblock-tag').style.color = '#8c8c8c';
+
       
       document.querySelector('.swagger-ui').style.backgroundColor = '#000';
       document.querySelector('.swagger-ui .info .title').style.color = '#8c8c8c';
@@ -151,11 +150,9 @@ window.addEventListener('load', function() {
       document.querySelector('.swagger-ui').style.color = '#fff';
       document.querySelector('.swagger-ui').style.fill = '#fff';
       document.querySelector('.swagger-ui').style.stroke = '#fff';
-      document.querySelector('.swagger-ui').style.border = '1px solid #fff';
-      document.querySelector('.swagger-ui').style.boxShadow = '0 0 10px #fff';
+
 
       // change only color and bakcground color properties of css 
-      document.querySelector('.opblock-tag').style.color = '#8c8c8c';
 
 
       const collection=document.getElementsByClassName('opblock-summary-path')
@@ -171,7 +168,11 @@ window.addEventListener('load', function() {
 
       
     }else{
+
       document.body.style.backgroundColor = '#000';
+
+      document.querySelector('.opblock-tag').style.color = '#000';
+
       document.querySelector('.swagger-ui').style.backgroundColor = '#fff';
       document.querySelector('.swagger-ui .info .title').style.color = '#000';
       document.querySelector('.swagger-ui .info p').style.color = '#000';
@@ -179,17 +180,15 @@ window.addEventListener('load', function() {
       document.querySelector('.swagger-ui').style.color = '#000';
       document.querySelector('.swagger-ui').style.fill = '#000';
       document.querySelector('.swagger-ui').style.stroke = '#000';
-      document.querySelector('.swagger-ui').style.border = '1px solid #000';
-      document.querySelector('.swagger-ui').style.boxShadow = '0 0 10px #000';
+  
 
       // change only color and bakcground color properties of css
-      document.querySelector('.opblock-tag').style.color = '#000';
 
       const collection=document.getElementsByClassName('opblock-summary-path')
 
       for (let i = 0; i < collection.length; i++) {
 
-        collection[i].style.color = '#000';
+        collection[i].style.color = '#3b4151';
 
       }
 
@@ -203,7 +202,7 @@ window.addEventListener('load', function() {
     ,
 
 
-  
+
 
 
 

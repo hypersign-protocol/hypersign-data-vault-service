@@ -23,7 +23,7 @@ import { DocumentStorageProvider } from 'src/storage/providers/documentStorage.p
 export class EdvInitModule implements NestModule{
 
     configure(consumer: MiddlewareConsumer) {
-         consumer.apply(AuthMiddleware).forRoutes('edv');
+         consumer.apply(AuthMiddleware).forRoutes('vault');
     }
 
 }

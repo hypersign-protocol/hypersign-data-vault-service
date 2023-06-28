@@ -1,5 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from "@nestjs/common";
-import { Request, Response, NextFunction } from 'express';
+import e, { Request, Response, NextFunction } from 'express';
 import * as crypto from "node:crypto";
 import { Ed25519VerificationKey2020 } from "@digitalbazaar/ed25519-verification-key-2020";
 import { constants } from 'security-context'
@@ -137,6 +137,7 @@ export class AuthMiddleware implements NestMiddleware {
                 });
 
                 if (error) {
+                    Logger.error(error, "AuthMiddleware");
                     return _res.status(401).send("Could not verify the signature");
                 }
 

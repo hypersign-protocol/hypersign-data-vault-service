@@ -1,8 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
 import mongoose, { Connection, FilterQuery, Model, Mongoose, createConnection } from "mongoose";
 import { DocSchema, DoucmentSchema } from "../model/doucment.model";
+import { DocumentQueryDTO } from "src/vault/dto/document.dto";
 @Injectable()
 export class DocumentStorageProvider {
+ 
 
   private connection: Connection;
   private connectedDB: Model<DocSchema>;
@@ -12,7 +14,7 @@ export class DocumentStorageProvider {
   async connectDB(
     dataBaseName: string,
   ) {
-    this.connection =await createConnection(process.env.DB_URL + `/${dataBaseName}`).asPromise();
+    this.connection = await createConnection(process.env.DB_URL + `/${dataBaseName}`).asPromise();
 
     await this.initiate();
     return this.connection;
@@ -20,9 +22,9 @@ export class DocumentStorageProvider {
   }
 
   async disconnectDB() {
-    await this.connection.close().then(() => {
-      Logger.log('Connection closed', 'DocumentStorageProvider');
-    })
+    await this.connection.close()
+    Logger.log('Connection closed', 'DocumentStorageProvider');
+
   }
 
 
@@ -37,16 +39,16 @@ export class DocumentStorageProvider {
     return await newDocument.save();
   }
 
-  async getDocument(documentFilterQuery:FilterQuery<DocSchema>) {
+  async getDocument(documentFilterQuery: FilterQuery<DocSchema>) {
 
     return await this.connectedDB.findOne(
       documentFilterQuery,
-     
+
     )
 
   }
 
-  async updateDocument(documentFilterQuery:FilterQuery<DocSchema>,document:Partial<DocSchema>) {    
+  async updateDocument(documentFilterQuery: FilterQuery<DocSchema>, document: Partial<DocSchema>) {
     return await this.connectedDB.findOneAndUpdate(
       documentFilterQuery,
       document,
@@ -56,10 +58,13 @@ export class DocumentStorageProvider {
   }
 
 
-  async   getAllDocuments(documentFilterQuery:FilterQuery<DocSchema>):Promise<DocSchema[]>{
+  async getAllDocuments(documentFilterQuery: FilterQuery<DocSchema>): Promise<DocSchema[]> {
     return await this.connectedDB.find().limit(documentFilterQuery.limit).skip(documentFilterQuery.skip);
-  } 
+  }
 
+  async queryDocuments(queryDocumentFilter:FilterQuery<DocSchema>){
+    return await this.connectedDB.find(queryDocumentFilter);
+  } 
 
 
 

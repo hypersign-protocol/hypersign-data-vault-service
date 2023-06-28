@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsEmpty, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsEmpty, IsObject, IsString, ValidateNested } from "class-validator";
 
 
 
@@ -231,5 +231,32 @@ export class DocumentResponseDTO{
         type:CreateDocumentDTO
     })
     document: CreateDocumentDTO;
+
+}
+
+
+export class DocumentQueryDTO{
+
+    @ApiProperty({
+        required:true,
+        type:[Object]
+    })
+    equals:Array<Object>;
+
+    @ApiProperty({
+        required:true,
+        type:[String]
+        
+    })
+    has:Array<String>;
+
+    @ApiProperty({
+
+        required:true,
+        type:String
+
+    })
+
+    index:string
 
 }
