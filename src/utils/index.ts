@@ -10,7 +10,7 @@ import { createHash } from "crypto";
 
 
 
-export const getHash = (str) => {
+export const getHash = (str):string => {
   const hash = createHash('sha1');
   return 'hs:vault:'+hash.update(str).digest('base64url');
 };
@@ -19,7 +19,7 @@ export const getHash = (str) => {
 
 // generate random document id
 
-export const generateDocId = (str) => {
+export const generateDocId = (str):string => {
   const hash = createHash('sha256');
   return 'hs:doc:'+ hash.update(str).digest('base64url').toLowerCase();
 }

@@ -2,6 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import mongoose, { Connection, FilterQuery, Model, Mongoose, createConnection } from "mongoose";
 import { DocSchema, DoucmentSchema } from "../model/doucment.model";
 import { DocumentQueryDTO } from "src/vault/dto/document.dto";
+import { ConfigService } from "@nestjs/config";
 @Injectable()
 export class DocumentStorageProvider {
  
@@ -9,12 +10,14 @@ export class DocumentStorageProvider {
   private connection: Connection;
   private connectedDB: Model<DocSchema>;
 
-  constructor() { }
+  constructor(
+    private configService: ConfigService,
+  ) { }
 
   async connectDB(
     dataBaseName: string,
-  ) {
-    this.connection = await createConnection(process.env.DB_URL + `/${dataBaseName}`).asPromise();
+  ) {    
+    this.connection = await createConnection(this.configService.get<string>('DB_URL') + `/${dataBaseName}`).asPromise();
 
     await this.initiate();
     return this.connection;
@@ -44,7 +47,7 @@ export class DocumentStorageProvider {
     return await this.connectedDB.findOne(
       documentFilterQuery,
 
-    )
+    ) ;
 
   }
 
