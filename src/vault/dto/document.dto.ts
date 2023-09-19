@@ -256,7 +256,14 @@ export class DocumentQueryDTO{
         type:String
 
     })
-
     index:string
+
+
+    @ApiProperty({
+        required:true,
+        type:String
+    })
+    returnFullDocuments:boolean;
+
 
 }

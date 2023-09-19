@@ -5,7 +5,7 @@ import { DocumentQueryDTO } from "src/vault/dto/document.dto";
 import { ConfigService } from "@nestjs/config";
 @Injectable()
 export class DocumentStorageProvider {
- 
+
 
   private connection: Connection;
   private connectedDB: Model<DocSchema>;
@@ -16,7 +16,7 @@ export class DocumentStorageProvider {
 
   async connectDB(
     dataBaseName: string,
-  ) {    
+  ) {
     this.connection = await createConnection(this.configService.get<string>('DB_URL') + `/${dataBaseName}`).asPromise();
 
     await this.initiate();
@@ -47,7 +47,7 @@ export class DocumentStorageProvider {
     return await this.connectedDB.findOne(
       documentFilterQuery,
 
-    ) ;
+    );
 
   }
 
@@ -65,9 +65,20 @@ export class DocumentStorageProvider {
     return await this.connectedDB.find().limit(documentFilterQuery.limit).skip(documentFilterQuery.skip);
   }
 
-  async queryDocuments(queryDocumentFilter:FilterQuery<DocSchema>){
-    return await this.connectedDB.find(queryDocumentFilter);
-  } 
+  async queryDocuments(queryDocumentFilter: FilterQuery<DocSchema>) {
+    return await this.connectedDB.find(queryDocumentFilter, {
+      'id': 1,
+    });
+  }
+  
+  async queryDocumentsWithPagination(queryDocumentFilter: FilterQuery<DocSchema>, limit: number, skip: number) {
+    return await this.connectedDB.find(queryDocumentFilter, {
+      'id': 1,
+    }).limit(limit).skip(skip);
+  }
+
+
+
 
 
 

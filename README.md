@@ -3,6 +3,9 @@
 "  src="https://assets.defiterm.io/hypersign" width="200" alt="Nest Logo" /></a>
 </p>
 
+## Pre-requisites
+
+- Node version: +v16
 
 
 ## Installation

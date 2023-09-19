@@ -72,11 +72,11 @@ export class VaultController {
 
 
     @AuthHeader()
-    @ApiResponse({ status: 302, type: [DocumentResponseDTO] })
+    @ApiResponse({ status: 200, type: [DocumentResponseDTO] })
     @Post(':vaultId/query')
     async queryDocuments(@Param() _params, @Body() _body:DocumentQueryDTO,@Res() _res): Promise<DocumentResponseDTO[]> {
         const id = _params.vaultId;
-        return  _res.status(HttpStatus.FOUND).send(await this.vaultService.queryDocuments(id, _body));
+        return  _res.status(HttpStatus.OK).send(await this.vaultService.queryDocuments(id, _body));
     }
 
 }
