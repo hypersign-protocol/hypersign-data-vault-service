@@ -12,7 +12,18 @@ export class vaultRepository {
     ) { }
 
 
-    async createVault(vault: VaultsIndex ) {                
+    async createOrFetchVault(vault: VaultsIndex ) {    
+        if(vault.id){
+            // check if vault already exists with this id,
+            // if so, just return that vault. 
+            const oldVault = await this.getVault({
+                id: vault.id
+            })
+
+            if(oldVault){
+                return oldVault;
+            }
+        }        
         const newVault = new this.vaultProvider(vault);
         return await newVault.save();
     }
