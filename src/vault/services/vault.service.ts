@@ -105,8 +105,8 @@ export class VaultService {
 
     async createVault(createEdvDto: createEdvDTO): Promise<createEdvResponseDTO> {
         try {
-            const vault = await this.vaultRepository.createVault(createEdvDto);
-            return { message: 'Vault created', vault }
+            const vault = await this.vaultRepository.createOrFetchVault(createEdvDto);
+            return { message: 'Vault created or fetched', vault }
         }
         catch (err) {
             if (err.code === 11000) {
