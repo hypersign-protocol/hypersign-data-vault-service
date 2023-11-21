@@ -1,0 +1,25 @@
+name: Vault Service Build Workflow
+
+on:
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout into repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install packages
+        run: npm install 
+
+      - name: Build studio-api
+        run: npm run build
