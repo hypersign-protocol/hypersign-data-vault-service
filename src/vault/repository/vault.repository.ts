@@ -1,14 +1,14 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Model } from "mongoose";
-import {  VaultsIndex } from "../model/vault.model";
+import {  VaultsIndex } from "../schemas/vault.schemas";
 
 
 
 @Injectable()
-export class vaultRepository {
+export class VaultRepository {
 
     constructor(
-        @Inject('VaultIndexProvider') private readonly vaultProvider:Model<VaultsIndex>
+        @Inject('VAULT_MODEL') private readonly vaultProvider:Model<VaultsIndex>
     ) { }
 
 
