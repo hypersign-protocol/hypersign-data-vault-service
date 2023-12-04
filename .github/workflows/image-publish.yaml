@@ -25,23 +25,19 @@ jobs:
           export_default_credentials: true
       - name: "Use gcloud CLI"
         run: "gcloud info"
-     
 
-      - name:  "Docker Auth" 
-        run:
-          gcloud auth configure-docker asia-south1-docker.pkg.dev
-          
+      - name: "Docker Auth"
+        run: gcloud auth configure-docker asia-south1-docker.pkg.dev
+
       - name: "Docker Build"
         env:
           GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
-        run:
-          docker build -t asia-south1-docker.pkg.dev/$GOOGLE_PROJECT_ID/hypersign-image-repository/vault-service:latest .
+          GOOGLE_ARTIFACT_URL: ${{secrets.GOOGLE_ARTIFACT_URL}}
+          GOOGLE_ARTIFACT_REPO: ${{secrets.GOOGLE_ARTIFACT_REPO}}
+        run: docker build -t $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest .
       - name: Push image
         env:
           GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
-        run:
-          docker push asia-south1-docker.pkg.dev/$GOOGLE_PROJECT_ID/hypersign-image-repository/vault-service:latest
-
-
-
+          GOOGLE_ARTIFACT_URL: ${{secrets.GOOGLE_ARTIFACT_REPO}}
+        run: docker push $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest
 
