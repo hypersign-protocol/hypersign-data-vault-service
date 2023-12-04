@@ -31,18 +31,15 @@ jobs:
         run: 
           gcloud auth configure-docker asia-south1-docker.pkg.dev
 
-      - name: "Docker Build"
+      - name: "Docker Build and Push"
         env:
           GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
           GOOGLE_ARTIFACT_URL: ${{secrets.GOOGLE_ARTIFACT_URL}}
           GOOGLE_ARTIFACT_REPO: ${{secrets.GOOGLE_ARTIFACT_REPO}}
         run: 
           docker build -t $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest .
-      - name: Push image
-        env:
-          GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
-          GOOGLE_ARTIFACT_URL: ${{secrets.GOOGLE_ARTIFACT_REPO}}
-          GOOGLE_ARTIFACT_REPO: ${{secrets.GOOGLE_ARTIFACT_REPO}}
-        run: 
+          
           docker push $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest
+
+     
 
