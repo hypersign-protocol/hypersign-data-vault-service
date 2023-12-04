@@ -1,4 +1,4 @@
-name: Vault Service Build Workflow
+name: Vault Service Build and Publish to google artifact repository
 
 on:
   push:
@@ -24,7 +24,9 @@ jobs:
           GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
         run:
           gcloud auth configure docker asia-south1-docker.pkg.dev
+
           docker build -t asia-south1-docker.pkg.dev/$GOOGLE_PROJECT_ID/hypersign-image-repository/hypersign-vault-service:latest .
+          
           docker push asia-south1-docker.pkg.dev/$GOOGLE_PROJECT_ID/hypersign-image-repository/hypersign-vault-service:latest
 
 
