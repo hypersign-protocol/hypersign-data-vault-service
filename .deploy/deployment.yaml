@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,6 +39,10 @@ spec:
               value: "__PORT__"
             - name: LOG
               value: __LOG__
+          readinessProbe:
+            httpGet:
+              path: /api
+              port: __PORT__
 
 ---
 apiVersion: v1
@@ -53,24 +58,5 @@ spec:
     - port: __PORT__
       targetPort: __PORT__
       protocol: TCP
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress
-  namespace: hypermine-development
-  labels:
-    name: ingress
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: vault-service
-                port:
-                  number: __PORT__
 ---
 
