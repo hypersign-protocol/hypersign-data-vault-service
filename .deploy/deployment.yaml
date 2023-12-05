@@ -46,32 +46,32 @@ metadata:
   name: vault-service
   namespace: hypermine-development
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: vault-app
   ports:
     - port: __PORT__
       targetPort: __PORT__
       protocol: TCP
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: ingress
-#   namespace: hypermine-development
-#   labels:
-#     name: ingress
-# spec:
-#   rules:
-#   - http:
-#       paths:
-#       - pathType: ImplementationSpecific
-#         path: "/app1"
-#         backend:
-#           service:
-#             name: vault-service
-#             port:
-#               number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: hypermine-development
+  labels:
+    name: ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: vault-service
+                port:
+                  number: 80
 
-# ---
 ---
 
