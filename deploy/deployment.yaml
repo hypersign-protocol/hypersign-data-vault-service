@@ -15,16 +15,14 @@ spec:
     spec:
       containers:
         - name: vault-app
-          image: asia-south1-docker.pkg.dev/fyre-400407/hypersign-image-repository/vault-service:latest
-          # - name: vault-app
-          #   image: paulbouwer/hello-kubernetes:1.5
+          image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:latest
+
           resources:
             limits:
               memory: "1Gi"
               cpu: "500m"
           ports:
             - containerPort: 3000
-              # protocol: TCP
           env:
             - name: HOST
               value: __HOST__
