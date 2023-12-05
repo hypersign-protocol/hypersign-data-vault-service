@@ -53,9 +53,12 @@ jobs:
           ABSOLUTE_URL: ${{secrets.ABSOLUTE_URL}}
           DATA_VAULT: ${{secrets.DATA_VAULT}}
           DB_URL: ${{secrets.DB_URL}}
-          PORT: ${{secrets.PORT}}
+          PORT: ${{ secrets.PORT }}
           LOG_LEVEL: ${{secrets.LOG_LEVEL}}
           SSL: ${{secrets.SSL}}
 
       - name: "Deploy to GKE"
-        run: kubectl apply -f deploy/deployment.yaml
+        run:
+          echo $PORT
+          cat  deploy/deployment.yaml
+          # kubectl apply -f deploy/deployment.yaml
