@@ -62,10 +62,15 @@ metadata:
   labels:
     name: ingress
 spec:
-  backend:
-    service:
-      name: vault-service
-      port:
-        number: __PORT__
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: vault-service
+                port:
+                  number: __PORT__
 ---
 
