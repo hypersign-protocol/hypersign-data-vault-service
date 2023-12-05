@@ -46,8 +46,8 @@ jobs:
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["**/deployment.yaml"]'
-          tokenPrefix: "{ "
-          tokenSuffix: " }"
+          tokenPrefix: __
+          tokenSuffix: __
         env:
           HOST: ${{secrets.HOST}}
           ABSOLUTE_URL: ${{secrets.ABSOLUTE_URL}}
@@ -58,7 +58,4 @@ jobs:
           SSL: ${{secrets.SSL}}
 
       - name: "Deploy to GKE"
-        run:
-          echo $PORT
-          cat  deploy/deployment.yaml
-          # kubectl apply -f deploy/deployment.yaml
+        run: kubectl apply -f deploy/deployment.yaml
