@@ -58,8 +58,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: __PORT__
-      targetPort: __PORT__
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
 
 ---
