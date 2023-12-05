@@ -56,6 +56,9 @@ jobs:
           PORT: ${{ secrets.PORT }}
           LOG_LEVEL: ${{secrets.LOG_LEVEL}}
           SSL: ${{secrets.SSL}}
+          GOOGLE_ARTIFACT_URL: ${{secrets.GOOGLE_ARTIFACT_URL}}
+          GOOGLE_ARTIFACT_REPO: ${{secrets.GOOGLE_ARTIFACT_REPO}}
+          GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
 
       - name: "Deploy to GKE"
         run: kubectl apply -f deploy/deployment.yaml
