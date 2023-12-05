@@ -61,4 +61,4 @@ jobs:
           GOOGLE_PROJECT_ID: ${{secrets.GOOGLE_PROJECT_ID}}
 
       - name: "Deploy to GKE"
-        run: kubectl apply -f deploy/deployment.yaml
+        run: kubectl apply -f .deploy/deployment.yaml
