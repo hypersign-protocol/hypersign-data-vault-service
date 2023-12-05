@@ -56,4 +56,4 @@ jobs:
           SSL: ${{secrets.SSL}}
 
       - name: "Deploy to GKE"
-        run: kubctl apply -f deploy/deployment.yaml
+        run: kubectl apply -f deploy/deployment.yaml
