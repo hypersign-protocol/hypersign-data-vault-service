@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-app
+  namespace: hypermine-development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-app
+  template:
+    metadata:
+      labels:
+        app: vault-app
+    spec:
+      containers:
+        - name: vault-app
+          image: asia-south1-docker.pkg.dev/fyre-400407/hypersign-image-repository/vault-service:latest
+          # - name: vault-app
+          #   image: paulbouwer/hello-kubernetes:1.5
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+              # protocol: TCP
+          env:
+            - name: HOST
+              value: { HOST }
+            - name: SSL
+              value: { HOST }
+            - name: ABSOLUTE_URL
+              value: { ABSOLUTE_URL }
+            - name: DATA_VAULT
+              value: { DATA_VAULT }
+            - name: DB_URL
+              value: { DB_URL }
+            - name: PORT
+              value: { PORT }
+            - name: LOG
+              value: { LOG }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-service
+  namespace: hypermine-development
+spec:
+  type: LoadBalancer
+  selector:
+    app: vault-app
+  ports:
+    - port: { PORT }
+      targetPort: { PORT }
+      protocol: TCP
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ingress
+#   namespace: hypermine-development
+#   labels:
+#     name: ingress
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - pathType: ImplementationSpecific
+#         path: "/app1"
+#         backend:
+#           service:
+#             name: vault-service
+#             port:
+#               number: 80
+
+# ---
+---
+
