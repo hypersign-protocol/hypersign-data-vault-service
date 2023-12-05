@@ -39,7 +39,8 @@ jobs:
           docker build -t $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest .
 
           docker push $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest
-
+      - name: "Configure kubectl"
+        run: gcloud container clusters get-credentials hypermine-gke --region=asia-south1
       - name: "Replace secrets"
         uses: cschleiden/replace-tokens@v1
         with:
