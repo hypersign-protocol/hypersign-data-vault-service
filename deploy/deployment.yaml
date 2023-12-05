@@ -27,19 +27,19 @@ spec:
               # protocol: TCP
           env:
             - name: HOST
-              value: { HOST }
+              value: __HOST__
             - name: SSL
-              value: { HOST }
+              value: __HOST__
             - name: ABSOLUTE_URL
-              value: { ABSOLUTE_URL }
+              value: __ABSOLUTE_URL__
             - name: DATA_VAULT
-              value: { DATA_VAULT }
+              value: __DATA_VAULT__
             - name: DB_URL
-              value: { DB_URL }
+              value: __DB_URL__
             - name: PORT
-              value: { PORT }
+              value: __PORT__
             - name: LOG
-              value: { LOG }
+              value: __LOG__
 
 ---
 apiVersion: v1
@@ -52,8 +52,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: { PORT }
-      targetPort: { PORT }
+    - port: __PORT__
+      targetPort: __PORT__
       protocol: TCP
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
