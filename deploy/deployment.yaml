@@ -37,7 +37,7 @@ spec:
             - name: DB_URL
               value: __DB_URL__
             - name: PORT
-              value: __PORT__
+              value: "3000"
             - name: LOG
               value: __LOG__
 
@@ -52,8 +52,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: __PORT__
-      targetPort: __PORT__
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
