@@ -46,6 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - name: code checkout
+        uses: actions/checkout@v3
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
