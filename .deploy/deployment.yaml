@@ -16,39 +16,39 @@ spec:
     spec:
       containers:
         - name: vault-app
-          image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:latest
+          image: #{GOOGLE_ARTIFACT_URL}#/#{__GOOGLE_PROJECT_ID}#/#{GOOGLE_ARTIFACT_REPO}#/vault-service:latest
 
           resources:
             limits:
               memory: "1Gi"
               cpu: "500m"
           ports:
-            - containerPort: 3000
+            - containerPort: #{PORT}#
           readinessProbe:
             tcpSocket:
-              port: 300
+              port: #{PORT}#
             initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: 300
+              port: #{PORT}#
             initialDelaySeconds: 15
             periodSeconds: 10
           env:
             - name: HOST
-              value: __HOST__
+              value: #{HOST}#
             - name: SSL
-              value: __HOST__
+              value: #{SSL}#
             - name: ABSOLUTE_URL
-              value: __ABSOLUTE_URL__
+              value: #{ABSOLUTE_URL}#
             - name: DATA_VAULT
-              value: __DATA_VAULT__
+              value: #{DATA_VAULT}#
             - name: DB_URL
-              value: __DB_URL__
+              value: #{DB_URL}#
             - name: PORT
-              value: "__PORT__"
+              value: "#{PORT}#"
             - name: LOG
-              value: __LOG__
+              value: #{LOG}#
 
 ---
 apiVersion: v1
@@ -64,8 +64,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: #{PORT}#
+      targetPort: #{PORT}#
       protocol: TCP
 ---
 
