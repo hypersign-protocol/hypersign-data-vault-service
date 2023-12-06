@@ -24,6 +24,16 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 3000
+          readinessProbe:
+            tcpSocket:
+              port: __PORT__
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: __PORT__
+            initialDelaySeconds: 15
+            periodSeconds: 10
           env:
             - name: HOST
               value: __HOST__
@@ -39,10 +49,6 @@ spec:
               value: "__PORT__"
             - name: LOG
               value: __LOG__
-          readinessProbe:
-            httpGet:
-              path: /api
-              port: 3000
 
 ---
 apiVersion: v1
