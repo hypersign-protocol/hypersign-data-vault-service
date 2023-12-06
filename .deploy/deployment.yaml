@@ -23,22 +23,22 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           ports:
-            - containerPort: 3000
+            - containerPort: __PORT__
           readinessProbe:
             tcpSocket:
-              port: 3000
+              port: __PORT__
             initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: 3000
+              port: __PORT__
             initialDelaySeconds: 15
             periodSeconds: 10
           env:
             - name: HOST
               value: __HOST__
             - name: SSL
-              value: __SSL__
+              value: "__SSL__"
             - name: ABSOLUTE_URL
               value: __ABSOLUTE_URL__
             - name: DATA_VAULT
@@ -64,8 +64,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: __PORT__
+      targetPort: __PORT__
       protocol: TCP
 ---
 
