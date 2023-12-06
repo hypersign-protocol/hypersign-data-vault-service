@@ -65,8 +65,8 @@ jobs:
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["**/deployment.yaml"]'
-          tokenPrefix: __
-          tokenSuffix: __
+          tokenPrefix: "__"
+          tokenSuffix: "__"
         env:
           HOST: ${{secrets.HOST}}
           ABSOLUTE_URL: ${{secrets.ABSOLUTE_URL}}
