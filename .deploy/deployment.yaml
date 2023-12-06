@@ -23,7 +23,7 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           ports:
-            - containerPort: __PORT__
+            - containerPort: 3000
           env:
             - name: HOST
               value: __HOST__
@@ -42,7 +42,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /api
-              port: __PORT__
+              port: 3000
 
 ---
 apiVersion: v1
