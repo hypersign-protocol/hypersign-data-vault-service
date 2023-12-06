@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
         - name: vault-app
-          image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:latest
-
+          image: asia-south1-docker.pkg.dev/fyre-400407/hypersign-image-repository/vault-service:latest
           resources:
             limits:
               memory: "1Gi"
