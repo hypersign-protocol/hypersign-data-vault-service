@@ -62,9 +62,9 @@ jobs:
       - name: "Configure kubectl"
         run: gcloud container clusters get-credentials hypermine-gke --region=asia-south1
       - name: "Replace secrets"
-        uses: cschleiden/replace-tokens@v1
+        uses: falnyr/replace-env-vars-action@master
         with:
-          files: '[".deploy/*.yaml"]'
+          filename: .deploy/deployment.yaml
         env:
           HOST: ${{secrets.HOST}}
           ABSOLUTE_URL: ${{secrets.ABSOLUTE_URL}}
