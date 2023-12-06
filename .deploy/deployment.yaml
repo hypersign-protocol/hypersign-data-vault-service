@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: vault-app
-          image: #{GOOGLE_ARTIFACT_URL}#/#{__GOOGLE_PROJECT_ID}#/#{GOOGLE_ARTIFACT_REPO}#/vault-service:latest
+          image: #{GOOGLE_ARTIFACT_URL}#/#{GOOGLE_PROJECT_ID}#/#{GOOGLE_ARTIFACT_REPO}#/vault-service:latest
 
           resources:
             limits:
