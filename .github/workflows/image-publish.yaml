@@ -64,7 +64,7 @@ jobs:
       - name: "Replace secrets"
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["**/deployment.yaml"]'
+          files: '[".deploy/*.yaml"]'
         env:
           HOST: ${{secrets.HOST}}
           ABSOLUTE_URL: ${{secrets.ABSOLUTE_URL}}
