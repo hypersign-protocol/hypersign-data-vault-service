@@ -62,17 +62,26 @@ jobs:
       - name: "Configure kubectl"
         run: gcloud container clusters get-credentials hypermine-gke --region=asia-south1
       - name: "Replace secrets"
-        run:
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__PORT__/${{ secrets.PORT }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__HOST__/${{ secrets.HOST }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__ABSOLUTE_URL__/${{ secrets.ABSOLUTE_URL }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__DATA_VAULT__/${{ secrets.DATA_VAULT }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__DB_URL__/${{ secrets.DB_URL }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__LOG_LEVEL__/${{ secrets.LOG_LEVEL }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__SSL__/${{ secrets.SSL }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_ARTIFACT_URL__/${{ secrets.GOOGLE_ARTIFACT_URL }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_ARTIFACT_REPO__/${{ secrets.GOOGLE_ARTIFACT_REPO }}/g'' {} \;
-          find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_PROJECT_ID__/${{ secrets.GOOGLE_PROJECT_ID }}/g'' {} \;
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__PORT__/${{ secrets.PORT }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__HOST__/${{ secrets.HOST }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__ABSOLUTE_URL__/${{ secrets.ABSOLUTE_URL }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__DATA_VAULT__/${{ secrets.DATA_VAULT }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__DB_URL__/${{ secrets.DB_URL }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__LOG_LEVEL__/${{ secrets.LOG_LEVEL }}/g'' {} \;
+
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__SSL__/${{ secrets.SSL }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_ARTIFACT_URL__/${{ secrets.GOOGLE_ARTIFACT_URL }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_ARTIFACT_REPO__/${{ secrets.GOOGLE_ARTIFACT_REPO }}/g'' {} \;
+      - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_PROJECT_ID__/${{ secrets.GOOGLE_PROJECT_ID }}/g'' {} \;
 
       - name: "Deploy to GKE"
         run: kubectl apply -f .deploy/deployment.yaml

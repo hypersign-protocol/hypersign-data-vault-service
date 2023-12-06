@@ -22,11 +22,11 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           ports:
-            - containerPort: 3000
+            - containerPort: __PORT__
           livenessProbe:
             httpGet:
               path: /api
-              port: 3000
+              port: __PORT__
           env:
             - name: HOST
               value: __HOST__
@@ -56,8 +56,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: __PORT__
+      targetPort: __PORT__
       protocol: TCP
 ---
 
