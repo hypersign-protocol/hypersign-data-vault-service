@@ -1,4 +1,4 @@
-name: Vault Service Build and Publish to google artifact repository
+name: Vault Service Build and Deploy Pipeline
 
 on:
   push:
@@ -82,7 +82,6 @@ jobs:
         run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_ARTIFACT_REPO__/${{ secrets.GOOGLE_ARTIFACT_REPO }}/g'' {} \;
       - name: "Replace secrets"
         run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__GOOGLE_PROJECT_ID__/${{ secrets.GOOGLE_PROJECT_ID }}/g'' {} \;
-
 
       - name: "Deploy to GKE"
         run: kubectl apply -f .deploy/deployment.yaml
