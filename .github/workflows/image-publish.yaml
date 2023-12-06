@@ -6,7 +6,7 @@ on:
       - "master"
 
 jobs:
-  Build-and-Publish-to-google-artifact-repository:
+  Build:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -40,14 +40,33 @@ jobs:
           docker build -t $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest .
 
           docker push $GOOGLE_ARTIFACT_URL/$GOOGLE_PROJECT_ID/$GOOGLE_ARTIFACT_REPO/vault-service:latest
+
+  Deploy:
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v3
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+      - name: install gcloud cli tools
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{secrets.GOOGLE_PROJECT_ID}}
+          service_account_key: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          install_components: "gke-gcloud-auth-plugin"
+          export_default_credentials: true
       - name: "Configure kubectl"
         run: gcloud container clusters get-credentials hypermine-gke --region=asia-south1
       - name: "Replace secrets"
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["**/deployment.yaml"]'
-          tokenPrefix: __
-          tokenSuffix: __
+          tokenPrefix: "__"
+          tokenSuffix: "__"
         env:
           HOST: ${{secrets.HOST}}
           ABSOLUTE_URL: ${{secrets.ABSOLUTE_URL}}
