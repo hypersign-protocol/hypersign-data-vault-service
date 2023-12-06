@@ -26,12 +26,12 @@ spec:
             - containerPort: 3000
           readinessProbe:
             tcpSocket:
-              port: __PORT__
+              port: 300
             initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: __PORT__
+              port: 300
             initialDelaySeconds: 15
             periodSeconds: 10
           env:
