@@ -23,15 +23,15 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           ports:
-            - containerPort: #{PORT}#
+            - containerPort: 3000
           readinessProbe:
             tcpSocket:
-              port: #{PORT}#
+              port: 3000
             initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: #{PORT}#
+              port: 3000
             initialDelaySeconds: 15
             periodSeconds: 10
           env:
@@ -64,8 +64,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: #{PORT}#
-      targetPort: #{PORT}#
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
 ---
 
