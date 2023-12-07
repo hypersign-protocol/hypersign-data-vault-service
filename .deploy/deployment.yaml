@@ -40,8 +40,8 @@ spec:
               value: "__DB_URL__"
             - name: PORT
               value: "__PORT__"
-            - name: LOG
-              value: "__LOG__"
+            - name: LOG_LEVEL
+              value: "__LOG_LEVEL__"
 
 ---
 apiVersion: v1
