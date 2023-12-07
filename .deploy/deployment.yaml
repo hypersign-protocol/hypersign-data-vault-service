@@ -23,10 +23,6 @@ spec:
               cpu: "200m"
           ports:
             - containerPort: __PORT__
-          livenessProbe:
-            httpGet:
-              path: /api
-              port: __PORT__
           env:
             - name: HOST
               value: __HOST__
