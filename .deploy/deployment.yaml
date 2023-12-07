@@ -37,11 +37,11 @@ spec:
             - name: DATA_VAULT
               value: __DATA_VAULT__
             - name: DB_URL
-              value: __DB_URL__
+              value: "__DB_URL__"
             - name: PORT
               value: "__PORT__"
             - name: LOG
-              value: __LOG__
+              value: "__LOG__"
 
 ---
 apiVersion: v1
