@@ -70,7 +70,7 @@ jobs:
       - name: "Replace secrets"
         run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__DATA_VAULT__/${{ secrets.DATA_VAULT }}/g'' {} \;
       - name: "Replace secrets"
-        run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__DB_URL__/${{ secrets.DB_URL }}/g'' {} \;
+        run: find .deploy/deployment.yaml -type f -exec sed  -i -e "s#__DB_URL__#${{ secrets.DB_URL }}#" {} \;
       - name: "Replace secrets"
         run: find .deploy/deployment.yaml -type f -exec sed  -i ''s/__LOG_LEVEL__/${{ secrets.LOG_LEVEL }}/g'' {} \;
 
