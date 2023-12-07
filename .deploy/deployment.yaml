@@ -19,7 +19,7 @@ spec:
           image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:latest
           resources:
             limits:
-              memory: "1gi"
+              memory: "1Gi"
               cpu: "500m"
           ports:
             - containerPort: __PORT__
