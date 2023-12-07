@@ -19,16 +19,16 @@ spec:
           image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:latest
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "200m"
+              memory: "1gi"
+              cpu: "500m"
           ports:
             - containerPort: __PORT__
-          livenessProbe:
-            httpGet:
-              path: /api
-              port: __PORT__
-            initialDelaySeconds: 15
-            periodSeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /api
+          #     port: __PORT__
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 10
           env:
             - name: HOST
               value: __HOST__
