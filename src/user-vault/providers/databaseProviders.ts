@@ -73,15 +73,13 @@ export const UserVaultProviders = [
         throw new Error('No DB_URL set in env');
       }
 
-      const uri = `${BASE_DB_PATH}`;
+      const uri = `${BASE_DB_PATH}/${tenantDB}?retryWrites=true&w=majority`;
 
       Logger.log(
         'Before creating new db connection...',
         'tenant-mongoose-connections',
       );
-      const newConnectionPerApp = await mongoose
-        .createConnection(uri)
-        .useDb(tenantDB);
+      const newConnectionPerApp = await mongoose.createConnection(uri);
 
       newConnectionPerApp.on('disconnected', () => {
         Logger.log(

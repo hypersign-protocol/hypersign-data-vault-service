@@ -40,6 +40,8 @@ spec:
               value: __DATA_VAULT__
             - name: DB_URL
               value: "__DB_URL__"
+            - name: DB_CONFIG
+              value: "__DB_CONFIG__"
             - name: PORT
               value: "__PORT__"
             - name: LOG_LEVEL

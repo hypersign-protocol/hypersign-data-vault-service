@@ -81,6 +81,8 @@ jobs:
       - name: "Replace secrets"
         run: find .deploy/deployment.yaml -type f -exec sed  -i -e "s#__DB_URL__#${{ secrets.DB_URL }}#" {} \;
       - name: "Replace secrets"
+        run: find .deploy/deployment.yaml -type f -exec sed  -i -e "s#__DB_CONFIG__#${{ secrets.DB_CONFIG }}#" {} \;
+      - name: "Replace secrets"
         run: find .deploy/deployment.yaml -type f -exec sed  -i "s#__LOG_LEVEL__#${{ secrets.LOG_LEVEL }}#" {} \;
 
       - name: "Replace secrets"
