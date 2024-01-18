@@ -73,8 +73,8 @@ export const UserVaultProviders = [
         throw new Error('No DB_URL set in env');
       }
 
-      const uri = `${BASE_DB_PATH}/${tenantDB}?retryWrites=true&w=majority`;
-
+      const uri = `${BASE_DB_PATH}/${tenantDB}${process.env.DB_CONFIG}`;
+      Logger.log(uri, 'tenant-mongoose-connections');
       Logger.log(
         'Before creating new db connection...',
         'tenant-mongoose-connections',
