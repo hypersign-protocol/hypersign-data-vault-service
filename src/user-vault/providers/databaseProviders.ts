@@ -15,32 +15,38 @@ export const UserVaultProviders = [
     useFactory: async (
       request: Request,
       config: ConfigService,
-      vaultRepository: VaultRepository
+      vaultRepository: VaultRepository,
     ): Promise<Connection> => {
-      Logger.log('Db connection database provider', 'tenant-mongoose-connections');
-      
-      Logger.log('Number of open connections: ' + connections.length, 'tenant-mongoose-connections')
-      
-      
-        const params = request.params
-        if(!params.vaultId){
-          throw new Error('vaultId request params is null or empty');
-        }
+      Logger.log(
+        'Db connection database provider',
+        'tenant-mongoose-connections',
+      );
 
-        const vault = await vaultRepository.getVault({
-          id: params.vaultId,
-        })
+      Logger.log(
+        'Number of open connections: ' + connections.length,
+        'tenant-mongoose-connections',
+      );
 
-        if (vault == undefined || vault == null) {
-          throw new HttpException({
+      const params = request.params;
+      if (!params.vaultId) {
+        throw new Error('vaultId request params is null or empty');
+      }
+
+      const vault = await vaultRepository.getVault({
+        id: params.vaultId,
+      });
+
+      if (vault == undefined || vault == null) {
+        throw new HttpException(
+          {
             message: `Vault with given id  ${params.vaultId} does not exists`,
-          }, HttpStatus.NOT_FOUND)
-        }
-      
-        const tenantDB = getHash(params.vaultId + vault.invoker);
-        Logger.log('VaultId '+ tenantDB, 'UserVaultProviders')
-      
-        
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const tenantDB = getHash(params.vaultId + vault.invoker);
+      Logger.log('VaultId ' + tenantDB, 'UserVaultProviders');
 
       // // Find existing connection
       const foundConn = connections.find((con: Connection) => {
@@ -49,10 +55,16 @@ export const UserVaultProviders = [
 
       // Return the same connection if it exist
       if (foundConn && foundConn.readyState === 1) {
-        Logger.log('Found connection tenantDB = ' + tenantDB, 'tenant-mongoose-connections')
+        Logger.log(
+          'Found connection tenantDB = ' + tenantDB,
+          'tenant-mongoose-connections',
+        );
         return foundConn;
       } else {
-        Logger.log('No connection found for tenantDB = ' + tenantDB, 'tenant-mongoose-connections')
+        Logger.log(
+          'No connection found for tenantDB = ' + tenantDB,
+          'tenant-mongoose-connections',
+        );
       }
 
       // TODO: take this from env using configService
@@ -61,17 +73,23 @@ export const UserVaultProviders = [
         throw new Error('No DB_URL set in env');
       }
 
-      const uri = `${BASE_DB_PATH}/${tenantDB}?retryWrites=true&w=majority`;
+      const uri = `${BASE_DB_PATH}`;
 
-      Logger.log('Before creating new db connection...', 'tenant-mongoose-connections');
-      const newConnectionPerApp = await mongoose.createConnection(uri);
+      Logger.log(
+        'Before creating new db connection...',
+        'tenant-mongoose-connections',
+      );
+      const newConnectionPerApp = await mongoose
+        .createConnection(uri)
+        .useDb(tenantDB);
 
       newConnectionPerApp.on('disconnected', () => {
         Logger.log(
-          'DB connection ' + newConnectionPerApp.name + ' is disconnected', 'tenant-mongoose-connections'
-        )
-      })
-      
+          'DB connection ' + newConnectionPerApp.name + ' is disconnected',
+          'tenant-mongoose-connections',
+        );
+      });
+
       return newConnectionPerApp;
     },
     inject: [REQUEST, ConfigService, VaultRepository],
