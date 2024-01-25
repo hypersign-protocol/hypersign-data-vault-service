@@ -19,8 +19,8 @@ spec:
           image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:__LATEST_RELEASE_TAG__
           resources:
             limits:
-              memory: "1Gi"
-              cpu: "500m"
+              memory: "512Mi"
+              cpu: "250m"
           ports:
             - containerPort: __PORT__
           # livenessProbe:
