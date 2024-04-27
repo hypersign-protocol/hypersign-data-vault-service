@@ -43,34 +43,29 @@ export class UserVaultService {
 
         // await this.documentRepository.connectDB(documentVaultId);
 
+
+
+
+
+
+
         const documents = flag ? await (async () => {
-          const equalsDbQuery = [];
 
-          query.equals?.forEach((e) => {
-            equalsDbQuery.push({
-              'indexed.attributes.name': Object.keys(e)[0],
-              'indexed.attributes.value': Object.values(e)[0],
-            });
-          });
-
-          return await this.documentRepository.queryDocuments({
-            $and: equalsDbQuery,
-          });
+            const name = Object.keys(query.equals[0])
+            const value = Object.values(query.equals[0])
+            return await this.documentRepository.queryDocuments({
+                'indexed.attributes.name': name[0],
+                'indexed.attributes.value': value[0]
+            })
         })()
-      : await (async () => {
-          const hasDbQuery = [];
+            : await this.documentRepository.queryDocuments(
+                {
+                    'indexed.attributes.name': query.has[0]
+                }
+            );
 
-          query.has?.forEach((e) => {
-            hasDbQuery.push({
-              'indexed.attributes.name': e,
-            });
-          });
 
-          return await this.documentRepository.queryDocuments({
-            $and: hasDbQuery,
-          });
-        })();
-            
+        // await this.documentRepository.disconnectDB();
 
         return documents as unknown as Array<DocumentResponseDTO>;
 
