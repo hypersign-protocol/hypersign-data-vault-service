@@ -1,6 +1,4 @@
-import {
-  DocSchema
-} from '../schemas/doucment.schema';
+import { DocSchema } from '../schemas/doucment.schema';
 import { FilterQuery, Model } from 'mongoose';
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -12,37 +10,62 @@ export class DocumentRepository {
 
   async createDocument(document: DocSchema) {
     const newDocument = new this.documentModel(document);
-    return await newDocument.save();
+
+    const doc = await newDocument.save();
+    return {
+      ...doc.toObject(),
+      sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
+    };
   }
 
   async getDocument(documentFilterQuery: FilterQuery<DocSchema>) {
-    return await this.documentModel.findOne(
-      documentFilterQuery,
-    );
+    const doc = await this.documentModel.findOne(documentFilterQuery);
+    return {
+      ...doc.toObject(),
+      sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
+    };
   }
 
-  async updateDocument(documentFilterQuery: FilterQuery<DocSchema>, document: Partial<DocSchema>) {
-    return await this.documentModel.findOneAndUpdate(
+  async updateDocument(
+    documentFilterQuery: FilterQuery<DocSchema>,
+    document: Partial<DocSchema>,
+  ) {
+    const doc = await this.documentModel.findOneAndUpdate(
       documentFilterQuery,
       document,
-      { new: true }
+      { new: true },
     );
+    return {
+      ...doc.toObject(),
+      sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
+    };
   }
 
-  async getAllDocuments(documentFilterQuery: FilterQuery<DocSchema>): Promise<DocSchema[]> {
-    return await this.documentModel.find().limit(documentFilterQuery.limit).skip(documentFilterQuery.skip);
+  async getAllDocuments(
+    documentFilterQuery: FilterQuery<DocSchema>,
+  ): Promise<DocSchema[]> {
+    return await this.documentModel
+      .find()
+      .limit(documentFilterQuery.limit)
+      .skip(documentFilterQuery.skip);
   }
 
   async queryDocuments(queryDocumentFilter: FilterQuery<DocSchema>) {
     return await this.documentModel.find(queryDocumentFilter, {
-      'id': 1,
+      id: 1,
     });
   }
-  
-  async queryDocumentsWithPagination(queryDocumentFilter: FilterQuery<DocSchema>, limit: number, skip: number) {
-    return await this.documentModel.find(queryDocumentFilter, {
-      'id': 1,
-    }).limit(limit).skip(skip);
-  }
 
+  async queryDocumentsWithPagination(
+    queryDocumentFilter: FilterQuery<DocSchema>,
+    limit: number,
+    skip: number,
+  ) {
+    return await this.documentModel
+      .find(queryDocumentFilter, {
+        id: 1,
+      })
+      .limit(limit)
+      .skip(skip);
+  }
 }
