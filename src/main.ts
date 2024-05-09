@@ -24,8 +24,8 @@ async function bootstrap() {
     .setVersion('v0.1')
     .build();
   app.setGlobalPrefix('api/v1');
-  app.use(json({ limit: '10mb' }));
-  app.use(urlencoded({ extended: true, limit: '10mb' }));
+  app.use(json({ limit: '20mb' }));
+  app.use(urlencoded({ extended: true, limit: '20mb' }));
   app.enableCors();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
