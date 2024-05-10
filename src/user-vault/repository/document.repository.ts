@@ -13,7 +13,7 @@ export class DocumentRepository {
 
     const doc = await newDocument.save();
     return {
-      ...doc.toObject(),
+      ...doc?.toObject(),
       sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
     };
   }
@@ -21,7 +21,7 @@ export class DocumentRepository {
   async getDocument(documentFilterQuery: FilterQuery<DocSchema>) {
     const doc = await this.documentModel.findOne(documentFilterQuery);
     return {
-      ...doc.toObject(),
+      ...doc?.toObject(),
       sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
     };
   }
@@ -36,7 +36,7 @@ export class DocumentRepository {
       { new: true },
     );
     return {
-      ...doc.toObject(),
+      ...doc?.toObject(),
       sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
     };
   }
