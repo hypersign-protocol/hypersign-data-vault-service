@@ -1,6 +1,6 @@
 import { DocSchema } from '../schemas/doucment.schema';
 import { FilterQuery, Model } from 'mongoose';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DocumentRepository {
@@ -20,10 +20,20 @@ export class DocumentRepository {
 
   async getDocument(documentFilterQuery: FilterQuery<DocSchema>) {
     const doc = await this.documentModel.findOne(documentFilterQuery);
+    if (!doc) {
+      throw new BadRequestException(
+        'Document with id ' + documentFilterQuery.id + 'not found.',
+      );
+    }
     return {
       ...doc?.toObject(),
       sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
     };
+  }
+
+  async deleteDocument(documentFilterQuery: FilterQuery<DocSchema>) {
+    const doc = await this.documentModel.deleteOne(documentFilterQuery);
+    return doc;
   }
 
   async updateDocument(
