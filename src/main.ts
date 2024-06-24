@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { urlencoded } from 'express';
+import { json, urlencoded } from 'express';
 import { LogLevel, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
@@ -24,7 +24,8 @@ async function bootstrap() {
     .setVersion('v0.1')
     .build();
   app.setGlobalPrefix('api/v1');
-  app.use(urlencoded({ extended: true, limit: '10mb' }));
+  app.use(json({ limit: '20mb' }));
+  app.use(urlencoded({ extended: true, limit: '20mb' }));
   app.enableCors();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
