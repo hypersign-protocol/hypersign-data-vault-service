@@ -59,8 +59,6 @@ export class UserVaultController {
   @Delete(':vaultId/document/:documentId')
   @ApiResponse({ status: 200 })
   async deleteDocument(@Param() _params, @Req() _req): Promise<any> {
-    console.log(_params);
-
     const id = _params.vaultId;
     const docId = _params.documentId;
     const invoker = _req.headers.vermethodid;
@@ -69,6 +67,15 @@ export class UserVaultController {
       documentId: docId,
       invoker,
     });
+  }
+  @AuthHeader()
+  @Delete('/:vaultId')
+  @ApiResponse({ status: 200 })
+  async deleteVault(@Param() _params, @Req() _req) {
+    const id = _params.vaultId;
+    const invoker = _req.headers.vermethodid;
+
+    return await this.vaultService.deleteVault({ id, invoker });
   }
 
   @AuthHeader()

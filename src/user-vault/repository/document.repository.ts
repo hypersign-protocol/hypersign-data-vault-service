@@ -36,6 +36,11 @@ export class DocumentRepository {
     return doc;
   }
 
+  async deleteVault() {
+    const deletionResult = await this.documentModel.db.dropDatabase();
+    return deletionResult;
+  }
+
   async updateDocument(
     documentFilterQuery: FilterQuery<DocSchema>,
     document: Partial<DocSchema>,

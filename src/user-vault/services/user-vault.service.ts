@@ -308,4 +308,21 @@ export class UserVaultService {
       return { message: 'document deleted', result: result };
     }
   }
+
+  async deleteVault({ id, invoker }) {
+    const vault = await this.vaultRepository.getVault({
+      id,
+      invoker,
+    });
+
+    if (vault == undefined || vault == null) {
+      throw new HttpException(
+        {
+          message: `Vault with given id : ${id} with invocationCapability : ${invoker} does not exists`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return this.documentRepository.deleteVault();
+  }
 }
