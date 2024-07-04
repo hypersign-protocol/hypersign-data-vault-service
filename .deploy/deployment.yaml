@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,47 +14,47 @@ spec:
         app: vault-app
     spec:
       containers:
-        - name: vault-app
-          image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:__LATEST_RELEASE_TAG__
-          resources:
-            limits:
-              memory: "512Mi"
-              cpu: "250m"
-            requests:
-              memory: "512Mi"
-              cpu: "250m"
-          ports:
-            - containerPort: __PORT__
-          # livenessProbe:
-          #   httpGet:
-          #     path: /api
-          #     port: __PORT__
-          #   initialDelaySeconds: 15
-          #   periodSeconds: 10
-          env:
-            - name: HOST
-              value: __HOST__
-            - name: SSL
-              value: "__SSL__"
-            - name: ABSOLUTE_URL
-              value: __ABSOLUTE_URL__
-            - name: DATA_VAULT
-              value: __DATA_VAULT__
-            - name: DB_URL
-              value: "__DB_URL__"
-            - name: DB_CONFIG
-              value: "__DB_CONFIG__"
-            - name: PORT
-              value: "__PORT__"
-            - name: LOG_LEVEL
-              value: "__LOG_LEVEL__"
-          volumeMounts:
-            - name: mongo
-              mountPath: "/data"
-      volumes:
+      - name: vault-app
+        image: __GOOGLE_ARTIFACT_URL__/__GOOGLE_PROJECT_ID__/__GOOGLE_ARTIFACT_REPO__/vault-service:__LATEST_RELEASE_TAG__
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+        ports:
+        - containerPort: __PORT__
+        # livenessProbe:
+        #   httpGet:
+        #     path: /api
+        #     port: __PORT__
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 10
+        env:
+        - name: HOST
+          value: __HOST__
+        - name: SSL
+          value: "__SSL__"
+        - name: ABSOLUTE_URL
+          value: __ABSOLUTE_URL__
+        - name: DATA_VAULT
+          value: __DATA_VAULT__
+        - name: DB_URL
+          value: "__DB_URL__"
+        - name: DB_CONFIG
+          value: "__DB_CONFIG__"
+        - name: PORT
+          value: "__PORT__"
+        - name: LOG_LEVEL
+          value: "__LOG_LEVEL__"
+        volumeMounts:
         - name: mongo
-          secret:
-            secretName: mongo
+          mountPath: "/data"
+      volumes:
+      - name: mongo
+        secret:
+          secretName: mongo
 ---
 apiVersion: v1
 kind: Service
@@ -69,8 +68,8 @@ spec:
   selector:
     app: vault-app
   ports:
-    - port: __PORT__
-      targetPort: __PORT__
-      protocol: TCP
----
+  - port: __PORT__
+    targetPort: __PORT__
+    protocol: TCP
 
+---
