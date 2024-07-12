@@ -133,6 +133,25 @@ export class UserVaultService {
     }
 
     // await this.documentRepository.connectDB(docVaultId);
+    try {
+      const attr = document.indexed[0].attributes as any;
+      const filterd = attr.filter((e) => {
+        if (e.unique == true) {
+          return e;
+        }
+      });
+
+      const data = await this.documentRepository.getDocuments({
+        'indexed.attributes': filterd,
+      });
+
+      if (data.length > 0) {
+        throw new Error('Unique index alreday exists');
+      }
+    } catch (error) {
+      throw Error(error);
+    }
+
     const doc = await this.documentRepository.createDocument(document);
     // await this.documentRepository.disconnectDB();
 
@@ -303,7 +322,6 @@ export class UserVaultService {
       const result = await this.documentRepository.deleteDocument({
         id: documentId,
       });
-      console.log(result);
 
       return { message: 'document deleted', result: result };
     }

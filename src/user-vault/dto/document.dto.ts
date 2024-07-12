@@ -30,7 +30,8 @@ export class IIndexed{
     @ApiProperty()
     hmac:Ihmac;
 
-    @ApiProperty()
+    @ApiProperty({
+    })
     attributes:IAttributes;
 }
 

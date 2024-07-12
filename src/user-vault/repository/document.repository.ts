@@ -30,6 +30,11 @@ export class DocumentRepository {
       sizeInbytes: Buffer.byteLength(JSON.stringify(doc.toObject())),
     };
   }
+  async getDocuments(documentFilterQuery: FilterQuery<DocSchema>) {
+    const doc = await this.documentModel.find(documentFilterQuery);
+
+    return doc;
+  }
 
   async deleteDocument(documentFilterQuery: FilterQuery<DocSchema>) {
     const doc = await this.documentModel.deleteOne(documentFilterQuery);
