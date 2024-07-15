@@ -89,15 +89,18 @@ export class UserVaultService {
     page,
     limit,
   ): Promise<Array<DocumentResponseDTO>> {
-    // const vault = await this.vaultRepository.getVault({
-    //     id,
-    // });
+    const vault = await this.vaultRepository.getVault({
+      id,
+    });
 
-    // if (vault == undefined || vault == null) {
-    //     throw new HttpException({
-    //         message: "Vault with given id does not exists",
-    //     }, HttpStatus.NOT_FOUND)
-    // }
+    if (vault == undefined || vault == null) {
+      throw new HttpException(
+        {
+          message: 'Vault with given id does not exists',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
 
     // const documentVaultId = getHash(id + vault.invoker);
     // await this.documentRepository.connectDB(documentVaultId);
@@ -277,6 +280,14 @@ export class UserVaultService {
         },
         HttpStatus.NOT_FOUND,
       );
+    }
+
+    if (invoker !== vault.invoker) {
+      Logger.debug(
+        `Invoker : ${invoker} is not authorized to access document : ${documentId} `,
+        'VaultService - Delete',
+      );
+      throw Error( `Invoker : ${invoker} is not authorized to access document : ${documentId} `)
     }
     // const docVaultId = getHash(id + vault.invoker);
     // await this.documentRepository.connectDB(docVaultId);
