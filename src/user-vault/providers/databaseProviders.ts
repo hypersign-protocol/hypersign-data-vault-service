@@ -74,6 +74,7 @@ export const UserVaultProviders = [
       }
 
       const uri = `${BASE_DB_PATH}/${tenantDB}${process.env.DB_CONFIG}`;
+      Logger.debug('connecting ' + tenantDB, 'DB Provider');
       Logger.log(uri, 'tenant-mongoose-connections');
       Logger.log(
         'Before creating new db connection...',

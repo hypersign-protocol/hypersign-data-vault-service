@@ -19,7 +19,7 @@ class hmac  {
     type: string
 }
 
-@Schema()
+@Schema({timestamps:true})
 export class VaultsIndex {
 
     @Prop()
