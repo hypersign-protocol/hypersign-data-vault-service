@@ -6,8 +6,59 @@ import { ConfigService } from '@nestjs/config';
 import { VaultRepository } from '../../vault/repository/vault.repository';
 import { Request } from 'express';
 import { getHash } from 'src/utils';
+import * as NodeCache from 'node-cache';
+const connectionPromises: Record<string, Promise<Connection>> = {};
 
-const connections: Connection[] = mongoose.connections;
+async function tenantConnection(tenantDB, uri) {
+  Logger.log(
+    `No active connection found for tenantDB = ${tenantDB}. Establishing a new one.`,
+    'tenant-mongoose-connections',
+  );
+  // // Find existing connection
+  const foundConn = mongoose.connections.find((con: Connection) => {
+    return con.name === tenantDB;
+  });
+
+  // Return the same connection if it exist
+  if (foundConn && foundConn.readyState === 1) {
+    Logger.log(
+      'Found connection tenantDB = ' + tenantDB,
+      'tenant-mongoose-connections',
+    );
+    return foundConn;
+  } else {
+    Logger.log(
+      'No connection found for tenantDB = ' + tenantDB,
+      'tenant-mongoose-connections',
+    );
+  }
+
+  if (!foundConn) {
+    if (!connectionPromises[tenantDB]) {
+      connectionPromises[tenantDB] = mongoose.createConnection(uri).asPromise();
+    }
+
+    const newConnection = await connectionPromises[tenantDB];
+    delete connectionPromises[tenantDB]; // Remove the promise after resolution
+
+    newConnection.on('disconnected', () => {
+      Logger.log(
+        'DB connection ' + newConnection.name + ' is disconnected',
+        'tenant-mongoose-connections',
+      );
+    });
+
+    newConnection.on('error', (err: Error) => {
+      Logger.error(
+        `Error in connection for tenantDB = ${tenantDB}: ${err.message}`,
+        'tenant-mongoose-connections',
+      );
+    });
+    return newConnection;
+  }
+}
+
+const nodeCache = new NodeCache();
 export const UserVaultProviders = [
   {
     provide: 'UserVaultDatabaseProvider',
@@ -23,7 +74,7 @@ export const UserVaultProviders = [
       );
 
       Logger.log(
-        'Number of open connections: ' + connections.length,
+        'Number of open connections: ' + mongoose.connections.length,
         'tenant-mongoose-connections',
       );
 
@@ -31,11 +82,16 @@ export const UserVaultProviders = [
       if (!params.vaultId) {
         throw new Error('vaultId request params is null or empty');
       }
+      let vault;
+      if (nodeCache.has(params.vaultId)) {
+        vault = nodeCache.get(params.vaultId);
+      } else {
+        vault = await vaultRepository.getVault({
+          id: params.vaultId,
+        });
 
-      const vault = await vaultRepository.getVault({
-        id: params.vaultId,
-      });
-
+        nodeCache.set(params.vaultId, vault);
+      }
       if (vault == undefined || vault == null) {
         throw new HttpException(
           {
@@ -44,28 +100,16 @@ export const UserVaultProviders = [
           HttpStatus.NOT_FOUND,
         );
       }
-
-      const tenantDB = getHash(params.vaultId + vault.invoker);
+      let tenantDB;
+      if (nodeCache.has(params.vaultId + vault.invoker)) {
+        tenantDB = nodeCache.get(params.vaultId + vault.invoker);
+      } else {
+        tenantDB = getHash(params.vaultId + vault.invoker);
+        nodeCache.set(params.vaultId + vault.invoker, tenantDB);
+      }
       Logger.log('VaultId ' + tenantDB, 'UserVaultProviders');
 
       // // Find existing connection
-      const foundConn = connections.find((con: Connection) => {
-        return con.name === tenantDB;
-      });
-
-      // Return the same connection if it exist
-      if (foundConn && foundConn.readyState === 1) {
-        Logger.log(
-          'Found connection tenantDB = ' + tenantDB,
-          'tenant-mongoose-connections',
-        );
-        return foundConn;
-      } else {
-        Logger.log(
-          'No connection found for tenantDB = ' + tenantDB,
-          'tenant-mongoose-connections',
-        );
-      }
 
       // TODO: take this from env using configService
       const BASE_DB_PATH = config.get('DB_URL');
@@ -80,7 +124,7 @@ export const UserVaultProviders = [
         'Before creating new db connection...',
         'tenant-mongoose-connections',
       );
-      const newConnectionPerApp = await mongoose.createConnection(uri);
+      const newConnectionPerApp = await tenantConnection(tenantDB, uri);
 
       newConnectionPerApp.on('disconnected', () => {
         Logger.log(
