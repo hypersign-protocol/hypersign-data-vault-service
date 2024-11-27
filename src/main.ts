@@ -45,7 +45,7 @@ async function bootstrap() {
     }),
   );
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('', app, document, {
+  SwaggerModule.setup('/', app, document, {
     swaggerOptions: {
       filter: true,
     },
