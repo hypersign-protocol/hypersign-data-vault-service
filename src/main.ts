@@ -15,20 +15,6 @@ async function bootstrap() {
     logger: log_levels,
   });
 
-  app.use(
-    expressMonitor({
-      chartVisibility: {
-        cpu: true,
-        mem: true,
-        load: true,
-        eventLoop: true,
-        heap: true,
-        responseTime: true,
-        rps: true,
-        statusCodes: true,
-      },
-    }),
-  );
   app.useGlobalPipes(
     new ValidationPipe({
       validateCustomDecorators: true,
@@ -44,8 +30,22 @@ async function bootstrap() {
   app.use(json({ limit: '20mb' }));
   app.use(urlencoded({ extended: true, limit: '20mb' }));
   app.enableCors();
+  app.use(
+    expressMonitor({
+      chartVisibility: {
+        cpu: true,
+        mem: true,
+        load: true,
+        eventLoop: true,
+        heap: true,
+        responseTime: true,
+        rps: true,
+        statusCodes: true,
+      },
+    }),
+  );
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, {
+  SwaggerModule.setup('', app, document, {
     swaggerOptions: {
       filter: true,
     },
