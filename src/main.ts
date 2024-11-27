@@ -1,22 +1,39 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { urlencoded,json } from 'express';
+import { urlencoded, json } from 'express';
 import { LogLevel, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-async function bootstrap() {
 
-  const log_levels: Array<LogLevel> = process.env.LOG_LEVEL ? process.env.LOG_LEVEL.split(',') as Array<LogLevel> : ['log'];
+import * as expressMonitor from 'express-status-monitor';
+async function bootstrap() {
+  const log_levels: Array<LogLevel> = process.env.LOG_LEVEL
+    ? (process.env.LOG_LEVEL.split(',') as Array<LogLevel>)
+    : ['log'];
 
   const app = await NestFactory.create(AppModule, {
     rawBody: true,
     logger: log_levels,
-
-
   });
 
-  app.useGlobalPipes(new ValidationPipe({
-    validateCustomDecorators: true,
-  }));
+  app.use(
+    expressMonitor({
+      chartVisibility: {
+        cpu: true,
+        mem: true,
+        load: true,
+        eventLoop: true,
+        heap: true,
+        responseTime: true,
+        rps: true,
+        statusCodes: true,
+      },
+    }),
+  );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      validateCustomDecorators: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Encrypted Data Vault API')
@@ -199,19 +216,12 @@ window.addEventListener('load', function() {
   })
 })
 
-`
-    ,
-
-
-
-
-
-
-
-
-
+`,
   });
   await app.listen(process.env.PORT);
-  Logger.log(`Server running on http://localhost:${process.env.PORT}`, 'VaultServerBootstrap');
+  Logger.log(
+    `Server running on http://localhost:${process.env.PORT}`,
+    'VaultServerBootstrap',
+  );
 }
 bootstrap();
