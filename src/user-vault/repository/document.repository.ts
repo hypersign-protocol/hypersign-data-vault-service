@@ -1,6 +1,6 @@
 import { DocSchema } from '../schemas/doucment.schema';
 import { FilterQuery, Model } from 'mongoose';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class DocumentRepository {
