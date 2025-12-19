@@ -19,10 +19,11 @@ export class DocumentRepository {
   }
 
   async getDocument(documentFilterQuery: FilterQuery<DocSchema>) {
+    Logger.log(documentFilterQuery, 'DocumentRepository');
     const doc = await this.documentModel.findOne(documentFilterQuery);
     if (!doc) {
       throw new BadRequestException(
-        'Document with id ' + documentFilterQuery.id + 'not found.',
+        'Document with id ' + documentFilterQuery.id + ' not found.',
       );
     }
     return {

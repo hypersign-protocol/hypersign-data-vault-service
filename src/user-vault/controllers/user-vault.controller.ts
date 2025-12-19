@@ -7,6 +7,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -85,7 +86,17 @@ export class UserVaultController {
     const documentId = _params.documentId;
     const id = _params.vaultId;
     const invoker = _req.headers.vermethodid;
-
+    if (!id || id == undefined || id == 'undefined') {
+      throw new BadRequestException({ message: 'Please pass vault id' });
+    }
+    if (!documentId || documentId == undefined || documentId == 'undefined') {
+      throw new BadRequestException({ message: 'Please pass document id' });
+    }
+    if (!invoker || invoker == undefined || invoker == 'undefined') {
+      throw new BadRequestException({
+        message: 'Please pass vermethodid in header',
+      });
+    }
     return await this.vaultService.getDocument({ id, documentId, invoker });
   }
 
