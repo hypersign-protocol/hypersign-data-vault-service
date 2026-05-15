@@ -142,7 +142,7 @@ class JWE {
 
 }
 
-@Schema()
+@Schema({timestamps:true})
 export class DocSchema {
 
     @Prop({ type: Object })
